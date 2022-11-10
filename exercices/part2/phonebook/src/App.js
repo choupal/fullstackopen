@@ -88,7 +88,7 @@ const App = () => {
   const deletePerson = (id, name) => {
     if (window.confirm(`Do you really want to delete ${name} ?`)) {
       phonebook.deleteNumber(id).then((response) => {
-        if (response.status === 200) {
+        if (response.status === 204) {
           setPersons(persons.filter((person) => person.id !== id));
           setMessage(`Deleted ${name}`);
           messageTimout();
