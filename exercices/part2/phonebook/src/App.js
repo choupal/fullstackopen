@@ -76,12 +76,19 @@ const App = () => {
         name: newName,
         number: newNum,
       };
-      phonebook.addNumber(newPerson).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setNewNum("");
-        setMessage(`Added ${newName} number !`);
-        messageTimout();
-      });
+      phonebook
+        .addNumber(newPerson)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setNewNum("");
+          setMessage(`Added ${newName} number !`);
+          messageTimout();
+        })
+        .catch((error) => {
+          setMessage(error.response.data.error);
+          setColor("error");
+          messageTimout();
+        });
     }
   };
 
