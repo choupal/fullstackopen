@@ -2,3 +2,4 @@
 .env
 /.idea
 requests.http
+jest.config.js
