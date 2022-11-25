@@ -90,12 +90,31 @@ describe("API POST REQUESTS", () => {
 
     await api
       .post("/api/blogs")
+      .set(
+        "Authorization",
+        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJlbksiLCJpZCI6IjYzODBjMTQxNTMyMWExMmE1MWNmYTc3MiIsImlhdCI6MTY2OTM5NDA0NiwiZXhwIjoxNjY5Mzk3NjQ2fQ.6cAmEPZLgPzUhZDlt6vHew7C5MmwJ3aziXlnRjEMGfU"
+      )
       .send(newBlog)
       .expect(201)
       .expect("Content-Type", /application\/json/);
 
     const blogsInDb = await listHelper.blogsInDb();
     expect(blogsInDb.length).toBe(initialBlogs.length + 1);
+    console.log(newBlog);
+  });
+
+  test("Error if no or invalid token", async () => {
+    const newBlog = {
+      title: "Hello There",
+      author: "General Kenobi",
+      url: "www.kenoblog.com",
+      likes: 12,
+    };
+
+    await api.post("/api/blogs").send(newBlog).expect(401);
+
+    const blogsInDb = await listHelper.blogsInDb();
+    expect(blogsInDb.length).toBe(initialBlogs.length);
   });
 
   test("if no likes property => default to 0 likes", async () => {
@@ -107,6 +126,10 @@ describe("API POST REQUESTS", () => {
 
     await api
       .post("/api/blogs")
+      .set(
+        "Authorization",
+        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJlbksiLCJpZCI6IjYzODBjMTQxNTMyMWExMmE1MWNmYTc3MiIsImlhdCI6MTY2OTM5NDA0NiwiZXhwIjoxNjY5Mzk3NjQ2fQ.6cAmEPZLgPzUhZDlt6vHew7C5MmwJ3aziXlnRjEMGfU"
+      )
       .send(newBlog)
       .expect(201)
       .expect("Content-Type", /application\/json/);
@@ -125,7 +148,14 @@ describe("API POST REQUESTS", () => {
       likes: 2,
     };
 
-    await api.post("/api/blogs").send(newBlog).expect(400);
+    await api
+      .post("/api/blogs")
+      .set(
+        "Authorization",
+        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJlbksiLCJpZCI6IjYzODBjMTQxNTMyMWExMmE1MWNmYTc3MiIsImlhdCI6MTY2OTM5NDA0NiwiZXhwIjoxNjY5Mzk3NjQ2fQ.6cAmEPZLgPzUhZDlt6vHew7C5MmwJ3aziXlnRjEMGfU"
+      )
+      .send(newBlog)
+      .expect(400);
   });
 
   test("if no url => 400 ", async () => {
@@ -135,7 +165,14 @@ describe("API POST REQUESTS", () => {
       likes: 2,
     };
 
-    await api.post("/api/blogs").send(newBlog).expect(400);
+    await api
+      .post("/api/blogs")
+      .set(
+        "Authorization",
+        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkJlbksiLCJpZCI6IjYzODBjMTQxNTMyMWExMmE1MWNmYTc3MiIsImlhdCI6MTY2OTM5NDA0NiwiZXhwIjoxNjY5Mzk3NjQ2fQ.6cAmEPZLgPzUhZDlt6vHew7C5MmwJ3aziXlnRjEMGfU"
+      )
+      .send(newBlog)
+      .expect(400);
   });
 });
 
